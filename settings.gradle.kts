@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 rootProject.name = "VoiceRecognitionCommandsExample"
 include(":app")
 includeBuild("build-logic")
+include(":android-initializable")
+include(":logger")

@@ -1,4 +1,4 @@
-package ua.widelab.example.ui.theme
+package ua.widelab.voicerecognitioncommandsexample.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

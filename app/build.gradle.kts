@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation(project(":android-initializable"))
+    implementation(project(":logger"))
+
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(platform(libs.compose.bom))

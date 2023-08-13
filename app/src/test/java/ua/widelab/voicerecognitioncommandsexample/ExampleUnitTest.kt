@@ -1,4 +1,4 @@
-package ua.widelab.example
+package ua.widelab.voicerecognitioncommandsexample
 
 import org.junit.Test
 
