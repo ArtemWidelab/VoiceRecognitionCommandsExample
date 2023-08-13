@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "VoiceRecognitionCommandsExample"
 include(":app")
+includeBuild("build-logic")
