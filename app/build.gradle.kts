@@ -35,6 +35,8 @@ android {
 dependencies {
     implementation(project(":android-initializable"))
     implementation(project(":logger"))
+    implementation(project(":main-commands:entities"))
+    implementation(project(":main-commands:repo"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
