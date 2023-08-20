@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ua.widelab.audio_recording.AudioRecorder
-import ua.widelab.main_commands.entities.CommandResult
 import ua.widelab.main_commands.repo.CommandProcessor
 import javax.inject.Inject
 
@@ -21,7 +20,7 @@ class MainCommandsViewModel @Inject constructor(
 
     data class State(
         val isRecording: Boolean = false,
-        val commands: List<CommandResult> = emptyList(),
+        val commands: List<Command> = emptyList(),
     )
 
     private val mutableState = MutableStateFlow(State())
@@ -45,8 +44,21 @@ class MainCommandsViewModel @Inject constructor(
         viewModelScope.launch {
             commandProcessor.result.collectLatest { result ->
                 mutableState.update {
+                    val newIds = result.map { it.id }
+                    val toDeleteCommands = it.commands
+                        .filter { it.id !in newIds && !it.isDeleting }
+                        .map { it.copy(isDeleting = true, isCurrent = false) }
+                    val newCommands = result.map {
+                        Command(
+                            id = it.id,
+                            name = it.name,
+                            value = it.value,
+                            isCurrent = it.isCurrent,
+                            isDeleting = false
+                        )
+                    }
                     it.copy(
-                        commands = result
+                        commands = newCommands + toDeleteCommands
                     )
                 }
             }
@@ -62,3 +74,11 @@ class MainCommandsViewModel @Inject constructor(
     }
 
 }
+
+data class Command(
+    val id: String,
+    val name: String,
+    val value: String,
+    val isCurrent: Boolean,
+    val isDeleting: Boolean
+)

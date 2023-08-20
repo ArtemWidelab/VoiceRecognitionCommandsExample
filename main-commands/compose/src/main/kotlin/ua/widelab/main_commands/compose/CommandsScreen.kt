@@ -17,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,9 +31,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ua.widelab.compose_components.dimensions
-import ua.widelab.main_commands.entities.CommandResult
+import ua.widelab.main_commands.presentation.Command
 import ua.widelab.main_commands.presentation.MainCommandsViewModel
 
 @Composable
@@ -51,7 +53,7 @@ internal fun CommandsScreen(
 @Composable
 private fun CommandsScreen(
     isRecording: Boolean,
-    commands: List<CommandResult>,
+    commands: List<Command>,
     startRecording: () -> Unit,
     stopRecording: () -> Unit,
 ) {
@@ -83,6 +85,7 @@ private fun CommandsScreen(
                 }
                 Item(
                     isHighlighted = it.isCurrent,
+                    isDeleting = it.isDeleting,
                     title = it.name,
                     value = value
                 )
@@ -197,15 +200,26 @@ private fun LazyItemScope.Item(
 private fun LazyItemScope.Item(
     title: String,
     value: String,
-    isHighlighted: Boolean
+    isHighlighted: Boolean,
+    isDeleting: Boolean
 ) {
     Item(
         isHighlighted = isHighlighted,
         extraPadding = false
     ) {
         Column {
-            Text(text = title)
-            Text(text = value)
+            val textStyle = when (isDeleting) {
+                true -> LocalTextStyle.current.copy(textDecoration = TextDecoration.LineThrough)
+                false -> LocalTextStyle.current
+            }
+            Text(
+                text = title,
+                style = textStyle,
+            )
+            Text(
+                text = value,
+                style = textStyle,
+            )
         }
     }
 }

@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":main-commands:entities"))
     implementation(project(":main-commands:presentation"))
     implementation(libs.accompanist.permissions)
 }
