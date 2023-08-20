@@ -4,14 +4,16 @@ import androidx.core.text.isDigitsOnly
 import ua.widelab.main_commands.repo.implementation.CommandProvider
 import ua.widelab.main_commands.repo.implementation.CommandStackInteractor
 import ua.widelab.main_commands.repo.implementation.commands.Command
+import java.util.UUID
 import javax.inject.Inject
 
 data class Count(
-    val value: String = ""
+    val value: String = "",
+    override val id: String = UUID.randomUUID().toString()
 ) : Command.CommandWithInput {
     override fun accept(value: String): Count? {
         if (value.isDigitsOnly()) {
-            return Count(this.value + value)
+            return this.copy(value = this.value + value)
         }
         return null
     }

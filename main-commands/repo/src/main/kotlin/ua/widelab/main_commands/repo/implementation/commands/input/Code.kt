@@ -4,14 +4,16 @@ import androidx.core.text.isDigitsOnly
 import ua.widelab.main_commands.repo.implementation.CommandProvider
 import ua.widelab.main_commands.repo.implementation.CommandStackInteractor
 import ua.widelab.main_commands.repo.implementation.commands.Command
+import java.util.UUID
 import javax.inject.Inject
 
 internal data class Code(
-    val data: String = ""
+    val data: String = "",
+    override val id: String = UUID.randomUUID().toString()
 ) : Command.CommandWithInput {
     override fun accept(value: String): Command.CommandWithInput? {
         if (value.isDigitsOnly()) {
-            return Code(
+            return this.copy(
                 data = this.data + value
             )
         }

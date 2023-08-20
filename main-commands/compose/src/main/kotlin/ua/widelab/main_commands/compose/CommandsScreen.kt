@@ -4,12 +4,14 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -60,7 +62,7 @@ private fun CommandsScreen(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         LazyColumn(reverseLayout = true) {
-            items(commands) {
+            items(commands, key = { it.id }) {
                 val value = when (it.isCurrent) {
                     true -> {
                         val ellipsisAnimatable = remember { Animatable(0f) }
@@ -86,7 +88,7 @@ private fun CommandsScreen(
                 )
             }
             if (!isRecording) {
-                item {
+                item(key = "no recording hint") {
                     Item(
                         text = stringResource(id = R.string.no_recording_hint) + System.lineSeparator() + stringResource(
                             id = R.string.recording_hint
@@ -94,7 +96,7 @@ private fun CommandsScreen(
                     )
                 }
             } else if (commands.lastOrNull()?.isCurrent != true) {
-                item {
+                item(key = "recording hint") {
                     Item(
                         text = stringResource(id = R.string.recording_hint)
                     )
@@ -159,8 +161,9 @@ private fun RecordingButton(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Item(
+private fun LazyItemScope.Item(
     isHighlighted: Boolean,
     extraPadding: Boolean,
     content: @Composable () -> Unit
@@ -168,7 +171,8 @@ private fun Item(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = if (extraPadding) MaterialTheme.dimensions.screenPadding else MaterialTheme.dimensions.cardPadding),
+            .padding(bottom = if (extraPadding) MaterialTheme.dimensions.screenPadding else MaterialTheme.dimensions.cardPadding)
+            .animateItemPlacement(),
         colors = if (isHighlighted) CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer) else CardDefaults.cardColors()
     ) {
         Column(modifier = Modifier.padding(all = MaterialTheme.dimensions.innerCardPadding)) {
@@ -178,7 +182,7 @@ private fun Item(
 }
 
 @Composable
-private fun Item(
+private fun LazyItemScope.Item(
     text: String
 ) {
     Item(
@@ -190,7 +194,7 @@ private fun Item(
 }
 
 @Composable
-private fun Item(
+private fun LazyItemScope.Item(
     title: String,
     value: String,
     isHighlighted: Boolean

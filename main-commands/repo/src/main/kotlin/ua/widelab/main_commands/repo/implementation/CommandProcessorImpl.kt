@@ -51,7 +51,8 @@ internal class CommandProcessorImpl @Inject constructor(
             CommandResult(
                 name = it.command.getTitle(),
                 value = it.command.getFormattedValue(),
-                isCurrent = it.isCurrent
+                isCurrent = it.isCurrent,
+                id = it.command.id
             )
         }
     }
