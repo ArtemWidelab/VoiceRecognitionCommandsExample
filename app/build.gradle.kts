@@ -37,6 +37,7 @@ dependencies {
     implementation(project(":logger"))
     implementation(project(":main-commands:entities"))
     implementation(project(":main-commands:repo"))
+    implementation(project(":audio-recording"))
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
