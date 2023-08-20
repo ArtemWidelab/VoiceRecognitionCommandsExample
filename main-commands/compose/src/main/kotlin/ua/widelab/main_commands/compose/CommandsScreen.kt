@@ -7,9 +7,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ua.widelab.compose_components.dimensions
 import ua.widelab.main_commands.entities.CommandResult
@@ -56,9 +60,45 @@ private fun CommandsScreen(
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         LazyColumn(reverseLayout = true) {
-
             items(commands) {
-                Text(text = it.toString())
+                val value = when (it.isCurrent) {
+                    true -> {
+                        val ellipsisAnimatable = remember { Animatable(0f) }
+                        val ellipsisCount by ellipsisAnimatable.asState()
+                        LaunchedEffect(Unit) {
+                            ellipsisAnimatable.animateTo(
+                                targetValue = 4f,
+                                animationSpec = infiniteRepeatable(
+                                    tween(durationMillis = 1000),
+                                    repeatMode = RepeatMode.Restart
+                                )
+                            )
+                        }
+                        it.value + ".".repeat(ellipsisCount.toInt())
+                    }
+
+                    false -> it.value.ifEmpty { stringResource(id = R.string.empty_value) }
+                }
+                Item(
+                    isHighlighted = it.isCurrent,
+                    title = it.name,
+                    value = value
+                )
+            }
+            if (!isRecording) {
+                item {
+                    Item(
+                        text = stringResource(id = R.string.no_recording_hint) + System.lineSeparator() + stringResource(
+                            id = R.string.recording_hint
+                        )
+                    )
+                }
+            } else if (commands.lastOrNull()?.isCurrent != true) {
+                item {
+                    Item(
+                        text = stringResource(id = R.string.recording_hint)
+                    )
+                }
             }
         }
         Column(
@@ -83,27 +123,6 @@ private fun CommandsScreen(
             }
         }
     }
-    /*
-    not recording:
-        push button and command - highlight
-        padding
-        commands (all not active)
-    recording:
-        no current:
-            desc of all commands and highlight
-            padding
-            commands
-        has current:
-            current
-            commands
-
-
-       IF no value and not active- NO VALUE
-       IF no value and active - show animation?
-       IF value and active - show animation?
-
-       animation - probably I need some ID for each command, so it animates correctly
-     */
 }
 
 @Composable
@@ -136,6 +155,53 @@ private fun RecordingButton(
             )
         } else {
             scaleAnimation.animateTo(1.5f)
+        }
+    }
+}
+
+@Composable
+private fun Item(
+    isHighlighted: Boolean,
+    extraPadding: Boolean,
+    content: @Composable () -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = if (extraPadding) MaterialTheme.dimensions.screenPadding else MaterialTheme.dimensions.cardPadding),
+        colors = if (isHighlighted) CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer) else CardDefaults.cardColors()
+    ) {
+        Column(modifier = Modifier.padding(all = MaterialTheme.dimensions.innerCardPadding)) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun Item(
+    text: String
+) {
+    Item(
+        isHighlighted = true,
+        extraPadding = true
+    ) {
+        Text(text = text)
+    }
+}
+
+@Composable
+private fun Item(
+    title: String,
+    value: String,
+    isHighlighted: Boolean
+) {
+    Item(
+        isHighlighted = isHighlighted,
+        extraPadding = false
+    ) {
+        Column {
+            Text(text = title)
+            Text(text = value)
         }
     }
 }
