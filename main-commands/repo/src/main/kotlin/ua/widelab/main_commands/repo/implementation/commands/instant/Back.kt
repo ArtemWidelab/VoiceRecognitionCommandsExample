@@ -14,7 +14,7 @@ internal object Back : Command.InstantCommand {
 
 internal class BackCommandProvider @Inject constructor() : CommandProvider {
     override fun predicate(key: String, interactor: CommandStackInteractor): Boolean {
-        return key == "back"
+        return key == "off"
     }
 
     override fun create(): Command {

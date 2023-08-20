@@ -14,9 +14,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-internal class TensorFlowAudioRecording @Inject constructor(
+internal class TensorFlowAudioRecorder @Inject constructor(
     @ApplicationContext context: Context
-) : AudioRecording {
+) : AudioRecorder {
 
     companion object {
         const val NUM_THREADS = 1

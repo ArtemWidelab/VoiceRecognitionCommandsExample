@@ -9,7 +9,7 @@ import ua.widelab.audio_recording.*
 @InstallIn(SingletonComponent::class)
 abstract class AudioRecordingModule {
     @Binds
-    internal abstract fun bindAudioRecording(
-        tensorFlowAudioRecording : TensorFlowAudioRecording
-    ): AudioRecording
+    internal abstract fun bindAudioRecorder(
+        tensorFlowAudioRecording : TensorFlowAudioRecorder
+    ): AudioRecorder
 }

@@ -7,7 +7,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":main-commands:entities"))
+    api(project(":main-commands:entities"))
     implementation(libs.immutableCollections)
 
     testImplementation(libs.junit)

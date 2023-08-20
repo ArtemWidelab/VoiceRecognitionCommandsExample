@@ -2,7 +2,7 @@ package ua.widelab.audio_recording
 
 import kotlinx.coroutines.flow.Flow
 
-public interface AudioRecording {
+public interface AudioRecorder {
     fun start()
     fun stop()
 

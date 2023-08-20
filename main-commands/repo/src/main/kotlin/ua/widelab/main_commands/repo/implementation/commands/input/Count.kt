@@ -27,7 +27,7 @@ data class Count(
 
 internal class CountCommandProvider @Inject constructor() : CommandProvider {
     override fun predicate(key: String, interactor: CommandStackInteractor): Boolean {
-        return key == "count"
+        return key == "follow"
     }
 
     override fun create(): Command {

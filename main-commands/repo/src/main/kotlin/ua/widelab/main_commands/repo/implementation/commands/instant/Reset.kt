@@ -16,7 +16,7 @@ internal object Reset : InstantCommand {
 
 internal class ResetCommandProvider @Inject constructor() : CommandProvider {
     override fun predicate(key: String, interactor: CommandStackInteractor): Boolean {
-        return key == "reset" && interactor.current() != null
+        return key == "stop" && interactor.current() != null
     }
 
     override fun create(): Command {

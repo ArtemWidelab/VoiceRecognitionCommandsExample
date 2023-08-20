@@ -1,0 +1,5 @@
+<resources>
+    <string name="permissions_required_title">Recording Permissions Required</string>
+    <string name="permissions_required_text">Audio recording is a key feature of the application</string>
+    <string name="permissions_required_action">Allow</string>
+</resources>

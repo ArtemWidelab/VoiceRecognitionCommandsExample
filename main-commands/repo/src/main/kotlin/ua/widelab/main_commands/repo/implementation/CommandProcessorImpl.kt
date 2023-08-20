@@ -12,8 +12,24 @@ internal class CommandProcessorImpl @Inject constructor(
     private val commandFactory: CommandFactory
 ) : CommandProcessor {
 
+    private fun normalizeWord(word: String): String {
+        return when (val w = word.trim().lowercase()) {
+            "zero" -> "0"
+            "one" -> "1"
+            "two" -> "2"
+            "three" -> "3"
+            "four" -> "4"
+            "five" -> "5"
+            "six" -> "6"
+            "seven" -> "7"
+            "eight" -> "8"
+            "nine" -> "9"
+            else -> w
+        }
+    }
+
     override fun pushWord(word: String): Boolean {
-        val normalizedWord = word.trim()
+        val normalizedWord = normalizeWord(word)
         if (commandStackInteractor.accept(normalizedWord)) return true
         val newCommand =
             commandFactory.createCommand(normalizedWord, commandStackInteractor) ?: return false

@@ -29,7 +29,7 @@ internal data class Code(
 
 internal class CodeCommandProvider @Inject constructor() : CommandProvider {
     override fun predicate(key: String, interactor: CommandStackInteractor): Boolean {
-        return key == "code"
+        return key == "go"
     }
 
     override fun create(): Command {
