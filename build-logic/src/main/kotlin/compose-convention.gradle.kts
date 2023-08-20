@@ -23,4 +23,5 @@ dependencies {
     implementation(libs.findLibrary("compose-ui-tooling-preview").get())
     implementation(libs.findLibrary("compose-material3").get())
     implementation(libs.findLibrary("lifecycle-composeviewmodel").get())
+    implementation(project(":compose-components"))
 }
