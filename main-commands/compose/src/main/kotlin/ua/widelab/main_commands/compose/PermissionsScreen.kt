@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import ua.widelab.compose_components.dimensions
 
 @Composable
-fun PermissionsScreen(
+internal fun PermissionsScreen(
     requestPermission: () -> Unit
 ) {
     Column(
