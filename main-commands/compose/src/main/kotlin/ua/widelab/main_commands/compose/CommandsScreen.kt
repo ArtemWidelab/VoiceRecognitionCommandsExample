@@ -147,7 +147,7 @@ private fun RecordingButton(
     isRecording: Boolean,
     onClick: () -> Unit
 ) {
-    val scaleAnimation = remember { Animatable(1.5f) }
+    val scaleAnimation = remember { Animatable(1f) }
     val scale by scaleAnimation.asState()
     LargeFloatingActionButton(
         modifier = modifier,
@@ -162,6 +162,7 @@ private fun RecordingButton(
 
     LaunchedEffect(isRecording) {
         if (isRecording) {
+            scaleAnimation.snapTo(1f)
             scaleAnimation.animateTo(
                 targetValue = 2f,
                 animationSpec = infiniteRepeatable(
@@ -170,7 +171,8 @@ private fun RecordingButton(
                 )
             )
         } else {
-            scaleAnimation.animateTo(1.5f)
+            scaleAnimation.animateTo(1f)
+            scaleAnimation.stop()
         }
     }
 }
