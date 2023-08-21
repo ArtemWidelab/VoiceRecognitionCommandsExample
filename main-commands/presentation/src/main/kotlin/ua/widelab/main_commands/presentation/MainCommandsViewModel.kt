@@ -58,7 +58,7 @@ class MainCommandsViewModel @Inject constructor(
                         )
                     }
                     it.copy(
-                        commands = newCommands + toDeleteCommands
+                        commands = toDeleteCommands + newCommands.reversed()
                     )
                 }
             }
