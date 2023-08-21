@@ -14,6 +14,7 @@ import org.assertj.core.api.ThrowingConsumer
 import org.junit.Rule
 import org.junit.Test
 import ua.widelab.main_commands.repo.implementation.commands.Command
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ListCommandStackInteractorTest {
@@ -460,7 +461,8 @@ private fun List<CommandStackInteractor.CommandWrapper>.assert(data: List<Pair<S
 }
 
 data class TestCommandWithInput(
-    val data: String
+    val data: String,
+    override val id: String = UUID.randomUUID().toString()
 ) : Command.CommandWithInput {
     override fun accept(value: String): TestCommandWithInput? {
         if (value.matches("\\d".toRegex())) {
